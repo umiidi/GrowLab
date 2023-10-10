@@ -1,14 +1,14 @@
-package az.growlab.GrowLab.model;
+package az.growlab.GrowLab.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class ProductDomain {
-    private Integer id;
+public class ProductResponse {
     private String name;
-    private Integer price;
+    private BigDecimal price;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
