@@ -10,7 +10,7 @@ public class ProductRepo {
     private HashMap<Integer, Product> products = new HashMap<>();
 
     public Integer size() {
-        return products.size();
+        return products.size()+1;
     }
 
     public Product getById(Integer id) {

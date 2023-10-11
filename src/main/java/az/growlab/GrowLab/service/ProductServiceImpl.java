@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse add(ProductRequest pr) {
         Product pd = modelMapper.map(pr, Product.class);
-        int id = productRepo.size() + 1;
+        int id = productRepo.size();
         pd.setId(id);
         pd.setCreatedAt(LocalDateTime.now());
         productRepo.add(pd);
