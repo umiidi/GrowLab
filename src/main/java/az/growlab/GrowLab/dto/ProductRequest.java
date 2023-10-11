@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 @Data
 public class ProductRequest {
-    @NotNull(message = "name cannot be null")
     @NotBlank(message = "name cannot be blank")
     private String name;
 

@@ -2,7 +2,7 @@ package az.growlab.GrowLab.service;
 
 import az.growlab.GrowLab.dto.ProductRequest;
 import az.growlab.GrowLab.dto.ProductResponse;
-import az.growlab.GrowLab.exception.ProductException;
+import az.growlab.GrowLab.exception.ProductNotFoundException;
 import az.growlab.GrowLab.model.Product;
 import az.growlab.GrowLab.repo.ProductRepo;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             return modelMapper.map(productRepo.getById(id), ProductResponse.class);
         } catch (RuntimeException ex) {
-            throw new ProductException("Product with such id was not found");
+            throw new ProductNotFoundException("Product with such id was not found");
         }
     }
 
@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
             p.setUpdatedAt(LocalDateTime.now());
             return modelMapper.map(p, ProductResponse.class);
         } catch (RuntimeException ex) {
-            throw new ProductException("Product with such id was not found");
+            throw new ProductNotFoundException("Product with such id was not found");
         }
     }
 
