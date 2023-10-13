@@ -1,39 +1,92 @@
 package az.growlab.GrowLab.repo;
 
+import az.growlab.GrowLab.dto.ProductRequest;
+import az.growlab.GrowLab.mapper.ProductRowMapper;
 import az.growlab.GrowLab.model.Product;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@RequiredArgsConstructor
 public class ProductRepo {
-    private HashMap<Integer, Product> products = new HashMap<>();
 
-    public Integer size() {
-        return products.size()+1;
-    }
+    private final NamedParameterJdbcTemplate productJdbcTemplate;
 
     public Product getById(Integer id) {
-        return products.get(id);
+        String query = "select * from product where id = :id";
+        Product p = null;
+        try {
+            p = productJdbcTemplate.queryForObject(query, new MapSqlParameterSource()
+                            .addValue("id", id),
+                    new ProductRowMapper());
+        } finally {
+            return p;
+        }
     }
 
     public List<Product> getAll() {
-        return new ArrayList<>(products.values());
+        String query = "select * from product";
+        List<Product> list = productJdbcTemplate.query(query, new ProductRowMapper());
+        return list;
     }
 
-    public Product add(Product p) {
-        return products.put(p.getId(), p);
+    public Product save(Product p) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String query = "insert into product(name, price, created_at) values(:name, :price, :created_at)";
+        productJdbcTemplate.update(
+                query,
+                new MapSqlParameterSource()
+                        .addValue("name", p.getName())
+                        .addValue("price", p.getPrice())
+                        .addValue("created_at", p.getCreatedAt()),
+                keyHolder
+        );
+        return p;
     }
 
     public Product update(Product p) {
-        return products.put(p.getId(), p);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String query = "update product set name = :name, price = :price, updated_at = :updated_at where id = :id";
+        productJdbcTemplate.update(
+                query,
+                new MapSqlParameterSource()
+                        .addValue("id", p.getId())
+                        .addValue("name", p.getName())
+                        .addValue("price", p.getPrice())
+                        .addValue("updated_at", p.getUpdatedAt()),
+                keyHolder
+        );
+        return p;
     }
 
-    public Product deleteById(Integer id) {
-        return products.remove(id);
+    public boolean deleteById(Integer id) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String query = "delete from product where id = :id";
+        productJdbcTemplate.update(
+                query,
+                new MapSqlParameterSource()
+                        .addValue("id", id),
+                keyHolder
+        );
+        return true;
     }
 
     public boolean delete(Product p) {
-        return products.remove(p.getId(), p);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String query = "delete from product where id = :id";
+        productJdbcTemplate.update(
+                query,
+                new MapSqlParameterSource()
+                        .addValue("id", p.getId()),
+                keyHolder
+        );
+        return true;
     }
 }

@@ -9,10 +9,12 @@ import java.math.BigDecimal;
 
 @Data
 public class ProductRequest {
+
     @NotBlank(message = "name cannot be blank")
     private String name;
 
     @Min(value = 0, message = "price min must be 1")
     @NotNull(message = "price cannot be null")
     private BigDecimal price;
+
 }

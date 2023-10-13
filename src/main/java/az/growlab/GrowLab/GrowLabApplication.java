@@ -9,4 +9,5 @@ public class GrowLabApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GrowLabApplication.class, args);
 	}
+
 }
