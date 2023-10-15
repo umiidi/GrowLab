@@ -1,10 +1,8 @@
 package az.growlab.GrowLab.repo;
 
-import az.growlab.GrowLab.dto.ProductRequest;
 import az.growlab.GrowLab.mapper.ProductRowMapper;
 import az.growlab.GrowLab.model.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
