@@ -1,16 +1,19 @@
 package az.growlab.GrowLab.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
+@Builder
 public class Product {
 
     private Integer id;
     private String name;
     private BigDecimal price;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
+
 }

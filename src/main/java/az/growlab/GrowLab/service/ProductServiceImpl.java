@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,12 +36,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse add(ProductRequest pr) {
-        Product pd = modelMapper.map(pr, Product.class);
-        int id = productRepo.size();
-        pd.setId(id);
-        pd.setCreatedAt(LocalDateTime.now());
-        productRepo.add(pd);
-        return modelMapper.map(pd, ProductResponse.class);
+        /*Product p = modelMapper.map(pr, Product.class);
+            Xəta verir, çox güman ki, Product classı Builder olduğu üçün
+
+            Xəta mesajı: Failed to instantiate instance of destination az.growlab.GrowLab.model.Product.
+            Ensure that az.growlab.GrowLab.model.Product has a non-private no-argument constructor.
+         */
+        Product p = Product.builder()
+                .name(pr.getName())
+                .price(pr.getPrice())
+                .createdAt(LocalDate.now())
+                .build();
+        productRepo.save(p);
+        return modelMapper.map(p, ProductResponse.class);
     }
 
     @Override
@@ -50,7 +57,8 @@ public class ProductServiceImpl implements ProductService {
             Product p = productRepo.getById(id);
             p.setName(pr.getName());
             p.setPrice(pr.getPrice());
-            p.setUpdatedAt(LocalDateTime.now());
+            p.setUpdatedAt(LocalDate.now());
+            productRepo.update(p);
             return modelMapper.map(p, ProductResponse.class);
         } catch (RuntimeException ex) {
             throw new ProductNotFoundException("Product with such id was not found");
